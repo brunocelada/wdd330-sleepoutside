@@ -1,0 +1,13 @@
+TRELLO BOARD: https://trello.com/b/fQJSPSF3
+
+GITHUB REPOSITORY: https://github.com/brunocelada/wdd330-sleepoutside
+
+RENDER PAGE: https://wdd330-sleepoutside-cnoh.onrender.com
+
+
+(Add yourself as soon as you can clone the repository, so we know your access and push were successful)
+MEMBERS LIST:
+- Bruno Celada
+- 
+- 
+- 

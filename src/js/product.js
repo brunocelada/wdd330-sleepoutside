@@ -11,7 +11,6 @@ product.init();
 // LOG TO SEE THE OBJECT RETURNED FROM THE DATASOURCE.
 // console.log(dataSource.findProductById(productId));
 
-
 // NO NEEDED ANY MORE:
 // function addProductToCart(product) {
 //   // 1. Get current cart items from localStorage, or default to an empty array

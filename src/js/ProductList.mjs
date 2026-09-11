@@ -9,7 +9,7 @@ function productCardTemplate(product) {
             <h2 class="card__name">${product.Name}</h2>
             <p class="product-card__price">$${product.FinalPrice}</p>
         </a>
-    </li>`
+    </li>`;
 };
 
 export default class ProductList {
@@ -20,7 +20,21 @@ export default class ProductList {
     }
     async init() {
         const list = await this.dataSource.getData();
-        this.renderList(list);
+
+        // The TRELLO activity says: 
+        // "Note that there are more tents in that list than we are currently showing. 
+        // You should NOT display the extras as we do not have detail pages for those yet."
+        const selectedIds = [
+            "880RR",
+            "985RF",
+            "985PR",
+            "344YJ"
+        ];
+        const filteredList = list.filter(product =>
+            selectedIds.includes(product.Id)
+        );
+
+        this.renderList(filteredList);
     }
     renderList(list) {
         renderListWithTemplate(productCardTemplate, this.listElement, list);

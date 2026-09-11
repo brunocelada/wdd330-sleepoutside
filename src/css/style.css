@@ -203,6 +203,16 @@ button {
   width: 100%;
 }
 
+/* Remove span added */
+.remove-item {
+  color: gray;
+}
+
+.remove-item:hover {
+  color: black;
+  cursor: pointer;
+}
+
 /* Start cart list card styles */
 .cart-card {
   display: grid;

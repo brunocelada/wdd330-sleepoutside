@@ -1,19 +1,21 @@
 import { getLocalStorage, setLocalStorage } from "./utils.mjs";
+import { updateCartCount } from "./cartCount.mjs";
 
 function renderCartContents() {
   const cartItems = getLocalStorage("so-cart");
   const listElement = document.querySelector(".product-list");
 
   // BC- Check if the cart is empty and display the warning.
-  if (cartItems.length === 0) {
+  if (!cartItems || cartItems.length === 0) {
     listElement.innerHTML = "<p>The cart is empty</p>";
     return;
-  };
+  }
 
   const htmlItems = cartItems.map((item) => cartItemTemplate(item));
   listElement.innerHTML = htmlItems.join("");
 
   addRemoveListeners();
+  updateCartCount();
 }
 
 function cartItemTemplate(item) {
@@ -52,12 +54,14 @@ function addRemoveListeners() {
       const index = cartItems.findIndex((cartItem) => cartItem.Id === id);
       if (index !== -1) {
         cartItems.splice(index, 1);
-      };
+      }
 
       setLocalStorage("so-cart", cartItems);
       renderCartContents();
+      updateCartCount();
     });
   });
 }
 
 renderCartContents();
+updateCartCount();

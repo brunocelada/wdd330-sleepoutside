@@ -4,7 +4,7 @@ function convertToJson(res) {
   } else {
     throw new Error("Bad Response");
   }
-}
+};
 
 export default class ProductData {
   constructor(category) {
@@ -20,4 +20,4 @@ export default class ProductData {
     const products = await this.getData();
     return products.find((item) => item.Id === id);
   }
-}
+};

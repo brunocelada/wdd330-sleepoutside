@@ -1,4 +1,5 @@
 import { getLocalStorage, setLocalStorage } from "./utils.mjs";
+import { updateCartCount } from "./cartCount.mjs";
 
 export default class ProductDetails {
     constructor(productId, dataSource) {
@@ -23,15 +24,17 @@ export default class ProductDetails {
         let cartItems = getLocalStorage("so-cart") || [];
         if (!Array.isArray(cartItems)) {
             cartItems = [cartItems];
-        }
+        };
         cartItems.push(this.product);
         setLocalStorage("so-cart", cartItems);
+
+        updateCartCount();
     }
     renderProductDetails() {
         // Method to populate the HTML with product details.
         productDetailsTemplate(this.product);
     }
-}
+};
 
 function productDetailsTemplate(product) {
     document.querySelector("h2").textContent = product.Brand.Name;
@@ -46,7 +49,7 @@ function productDetailsTemplate(product) {
     document.getElementById("productDesc").innerHTML = product.DescriptionHtmlSimple;
 
     document.getElementById("addToCart").dataset.id = product.Id;
-}
+};
 
 
 

@@ -28,7 +28,7 @@ export function renderListWithTemplate(
   parentElement,
   list,
   position = "afterbegin",
-  clear = false
+  clear = true
 ) {
   if (clear) {
     parentElement.innerHTML = "";

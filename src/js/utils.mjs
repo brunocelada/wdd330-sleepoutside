@@ -42,8 +42,7 @@ export function renderWithTemplate(templateFn, parentElement, data, callback) {
   if(callback){
     callback(data);
   }
-  parentElement.insertAdjacentHTML("afterbegin", templateFn);
-};
+}
 
 export async function loadTemplate(path) {
   const response = await fetch(path);

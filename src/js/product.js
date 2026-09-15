@@ -9,8 +9,12 @@ const productId = getParam("product");
 const product = new ProductDetails(productId, dataSource);
 product.init();
 
-loadHeaderFooter();
-updateCartCount();
+async function init() {
+  await loadHeaderFooter();
+  updateCartCount();
+}
+
+init();
 
 // LOG TO SEE THE OBJECT RETURNED FROM THE DATASOURCE.
 // console.log(dataSource.findProductById(productId));

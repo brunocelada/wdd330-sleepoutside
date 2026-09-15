@@ -64,6 +64,9 @@ function addRemoveListeners() {
   });
 }
 
-loadHeaderFooter();
-renderCartContents();
-updateCartCount();
+async function init() {
+  await loadHeaderFooter();
+  renderCartContents();
+}
+
+init();

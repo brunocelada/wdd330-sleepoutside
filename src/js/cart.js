@@ -64,6 +64,6 @@ function addRemoveListeners() {
   });
 }
 
-renderCartContents();
 loadHeaderFooter();
+renderCartContents();
 updateCartCount();

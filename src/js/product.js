@@ -1,4 +1,4 @@
-import { getParam } from "./utils.mjs";
+import { getParam, loadHeaderFooter } from "./utils.mjs";
 import ProductData from "./ProductData.mjs";
 import ProductDetails from "./ProductDetails.mjs";
 import { updateCartCount } from "./cartCount.mjs";
@@ -9,7 +9,12 @@ const productId = getParam("product");
 const product = new ProductDetails(productId, dataSource);
 product.init();
 
-updateCartCount();
+async function init() {
+  await loadHeaderFooter();
+  updateCartCount();
+}
+
+init();
 
 // LOG TO SEE THE OBJECT RETURNED FROM THE DATASOURCE.
 // console.log(dataSource.findProductById(productId));

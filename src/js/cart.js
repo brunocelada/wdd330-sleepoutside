@@ -1,5 +1,6 @@
 import { getLocalStorage, setLocalStorage } from "./utils.mjs";
 import { updateCartCount } from "./cartCount.mjs";
+import { loadHeaderFooter } from "./utils.mjs";
 
 function renderCartContents() {
   const cartItems = getLocalStorage("so-cart");
@@ -64,4 +65,5 @@ function addRemoveListeners() {
 }
 
 renderCartContents();
+loadHeaderFooter();
 updateCartCount();

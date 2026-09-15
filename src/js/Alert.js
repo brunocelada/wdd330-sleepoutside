@@ -1,5 +1,5 @@
 export default class Alert {
-    constructor(jsonPath = '../json/alerts.json') {
+    constructor(jsonPath = '/json/alerts.json') {  // Use absolute path from root
         this.jsonPath = jsonPath;
     }
 

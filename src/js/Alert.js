@@ -1,45 +1,29 @@
 export default class Alert {
-    constructor(jsonPath = '/json/alerts.json') { // or '/alerts.json' depending on your folder layout
-        this.jsonPath = jsonPath;
-    }
-
     async init() {
         try {
             const response = await fetch("/json/alerts.json");
-
+            if (!response.ok) return;
             const alerts = await response.json();
+
             if (alerts && alerts.length > 0) {
-                this.renderAlerts(alerts);
+                const alertSection = document.createElement("section");
+                alertSection.classList.add("alert-list");
+
+                alerts.forEach((alertData) => {
+                    const p = document.createElement("p");
+                    p.textContent = alertData.message;
+                    p.style.backgroundColor = alertData.background || "darkorange";
+                    p.style.color = alertData.color || "white";
+                    p.style.padding = "10px";
+                    p.style.textAlign = "center";
+                    alertSection.appendChild(p);
+                });
+
+                const main = document.querySelector("main") || document.body;
+                main.prepend(alertSection);
             }
         } catch (error) {
-            console.error('Error loading alerts:', error);
-        }
-    }
-
-    renderAlerts(alerts) {
-        const alertSection = document.createElement('section');
-        alertSection.classList.add('alert-list');
-
-        alerts.forEach((alertData) => {
-            const alertParagraph = document.createElement('p');
-            alertParagraph.textContent = alertData.message;
-
-            if (alertData.background) {
-                alertParagraph.style.backgroundColor = alertData.background;
-            }
-            if (alertData.color) {
-                alertParagraph.style.color = alertData.color;
-            }
-
-            alertParagraph.style.padding = '1rem';
-            alertParagraph.style.textAlign = 'center';
-
-            alertSection.appendChild(alertParagraph);
-        });
-
-        const mainElement = document.querySelector('main');
-        if (mainElement) {
-            mainElement.prepend(alertSection);
+            console.error("Error loading alerts:", error);
         }
     }
 }

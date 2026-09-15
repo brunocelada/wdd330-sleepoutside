@@ -5,8 +5,7 @@ export default class Alert {
 
     async init() {
         try {
-            const response = await fetch(this.jsonPath);
-            if (!response.ok) return;
+            const response = await fetch("/json/alerts.json");
 
             const alerts = await response.json();
             if (alerts && alerts.length > 0) {

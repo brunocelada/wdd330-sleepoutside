@@ -2,7 +2,7 @@ import { renderListWithTemplate } from "./utils.mjs";
 
 function categoryCardTemplate(category) {
     return `<li class="category-card">
-        <a href="product_listing/${category.urlName}">
+        <a href="product_listing/?category=${category.urlName}">
             <img src="${category.Image}"
                 alt="Image of ${category.Name}" />
             <h2 class="card__name">${category.Name}</h2>

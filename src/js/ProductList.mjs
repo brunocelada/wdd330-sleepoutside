@@ -40,17 +40,19 @@ export default class ProductList {
         // The TRELLO activity says:
         // "Note that there are more tents in that list than we are currently showing.
         // You should NOT display the extras as we do not have detail pages for those yet."
-        const selectedIds = [
-            "880RR",
-            "985RF",
-            "985PR",
-            "344YJ"
-        ];
-        const filteredList = list.filter(product =>
-            selectedIds.includes(product.Id)
-        );
 
-        this.renderList(filteredList);
+        // REMOVED BECAUSE THE EXPANSION OF THE INVENTORY
+        // const selectedIds = [
+        //     "880RR",
+        //     "985RF",
+        //     "985PR",
+        //     "344YJ"
+        // ];
+        // const filteredList = list.filter(product =>
+        //     selectedIds.includes(product.Id)
+        // );
+
+        this.renderList(list);
     }
 
     renderList(list) {

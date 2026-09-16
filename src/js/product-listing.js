@@ -5,16 +5,16 @@ import { getParam, loadHeaderFooter } from "./utils.mjs";
 
 const category = getParam("category");
 
-const dataSource = new ProductData(category);
+const dataSource = new ProductData();
 
 const element = document.querySelector(".product-list");
 
 const productList = new ProductList(category, dataSource, element);
 
 async function init() {
-    await productList.init();
-    await loadHeaderFooter();
-    updateCartCount();
+  await productList.init();
+  await loadHeaderFooter();
+  updateCartCount();
 }
 
 init();

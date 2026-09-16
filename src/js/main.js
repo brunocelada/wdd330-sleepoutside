@@ -9,10 +9,9 @@ const element = document.querySelector(".category-list");
 
 const categoryList = new CategoryList(dataSource, element);
 
-categoryList.init();
-
 async function init() {
   await loadHeaderFooter();
+  await categoryList.init();
   updateCartCount();
 }
 

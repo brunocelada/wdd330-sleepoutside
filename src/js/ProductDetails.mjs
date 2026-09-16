@@ -37,18 +37,22 @@ export default class ProductDetails {
 };
 
 function productDetailsTemplate(product) {
-    document.querySelector("h2").textContent = product.Brand.Name;
-    document.querySelector("h3").textContent = product.NameWithoutBrand;
+    document.querySelector("#productCategory").textContent = product.Category.charAt(0).toUpperCase() + product.Category.slice(1);
+    document.querySelector("#productBrand").textContent = product.Brand.Name;
+    document.querySelector("#productName").textContent = product.NameWithoutBrand;
 
-    const productImage = document.getElementById("productImage");
-    productImage.src = product.Image;
+    const productImage = document.querySelector("#productImage");
+    productImage.src = product.Images.PrimaryExtraLarge;
     productImage.alt = product.NameWithoutBrand;
+    const euroPrice = new Intl.NumberFormat("de-DE",
+        {
+            style: "currency", currency: "EUR",
+        }).format(Number(product.FinalPrice));
+    document.querySelector("#productPrice").textContent = `${euroPrice}`;
+    document.querySelector("#productColor").textContent = product.Colors[0].ColorName;
+    document.querySelector("#productDesc").innerHTML = product.DescriptionHtmlSimple;
 
-    document.getElementById("productPrice").textContent = product.FinalPrice;
-    document.getElementById("productColor").textContent = product.Colors[0].ColorName;
-    document.getElementById("productDesc").innerHTML = product.DescriptionHtmlSimple;
-
-    document.getElementById("addToCart").dataset.id = product.Id;
+    document.querySelector("#addToCart").dataset.id = product.Id;
 };
 
 

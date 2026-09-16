@@ -16,8 +16,8 @@ function productCardTemplate(product) {
             : "";
 
     return `<li class="product-card">
-        <a href="product_pages/?product=${product.Id}">
-            <img src="${product.Image}"
+        <a href="/product_pages/?product=${product.Id}">
+            <img src="${product.Images.PrimaryMedium}"
                 alt="Image of ${product.Name}" />
             ${discountIndicator}
             <h3 class="card__brand">${product.Brand.Name}</h3>
@@ -35,7 +35,7 @@ export default class ProductList {
     }
 
     async init() {
-        const list = await this.dataSource.getData();
+        const list = await this.dataSource.getData(this.category);
 
         // The TRELLO activity says:
         // "Note that there are more tents in that list than we are currently showing.
@@ -53,6 +53,8 @@ export default class ProductList {
         // );
 
         this.renderList(list);
+        const categoryName = this.category.charAt(0).toUpperCase() + this.category.slice(1);
+        document.querySelector(".title").textContent = categoryName;
     }
 
     renderList(list) {

@@ -235,6 +235,13 @@ button {
   width: 100%;
 }
 
+.product-detail h5 {
+  margin: 0.5em 0;
+  color: var(--tertiary-color);
+  font-weight: normal;
+  font-style: italic;
+}
+
 /* Remove span added */
 .remove-item {
   color: gray;

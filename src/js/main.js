@@ -17,3 +17,14 @@ async function init() {
 }
 
 init();
+
+
+// Customizable home-page alert
+const siteAlert = document.querySelector("#site-alert");
+const siteAlertClose = document.querySelector("#site-alert-close");
+
+if (siteAlert && siteAlertClose) {
+  siteAlertClose.addEventListener("click", () => {
+    siteAlert.hidden = true;
+  });
+}

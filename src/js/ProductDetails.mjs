@@ -1,5 +1,6 @@
 import { getLocalStorage, setLocalStorage } from "./utils.mjs";
 import { updateCartCount } from "./cartCount.mjs";
+import { updateBreadcrumb } from "./breadcrumb.mjs";
 
 export default class ProductDetails {
     constructor(productId, dataSource) {
@@ -16,6 +17,8 @@ export default class ProductDetails {
         // 5. The readings from this week explains why we need to use .bind(this), and what happens if we don't use it.
         this.product = await this.dataSource.findProductById(this.productId);
         this.renderProductDetails();
+
+        updateBreadcrumb(this.product.Category);
         document
             .getElementById("addToCart")
             .addEventListener("click", this.addProductToCart.bind(this));
@@ -37,7 +40,6 @@ export default class ProductDetails {
 };
 
 function productDetailsTemplate(product) {
-    document.querySelector("#productCategory").textContent = product.Category.charAt(0).toUpperCase() + product.Category.slice(1);
     document.querySelector("#productBrand").textContent = product.Brand.Name;
     document.querySelector("#productName").textContent = product.NameWithoutBrand;
 

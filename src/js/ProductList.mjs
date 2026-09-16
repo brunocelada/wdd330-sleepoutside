@@ -1,4 +1,5 @@
 import { renderListWithTemplate } from "./utils.mjs";
+import { updateBreadcrumb } from "./breadcrumb.mjs";
 
 function productCardTemplate(product) {
     const discount =
@@ -55,6 +56,10 @@ export default class ProductList {
         this.renderList(list);
         const categoryName = this.category.charAt(0).toUpperCase() + this.category.slice(1);
         document.querySelector(".title").textContent = categoryName;
+
+        // BC- BREADCRUMB
+        updateBreadcrumb(this.category, list.length);
+
     }
 
     renderList(list) {

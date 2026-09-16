@@ -290,6 +290,42 @@ button {
   grid-column: 3;
 }
 
+#breadcrumb {
+  margin: 0.5em 0;
+  padding: 0.1em;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+  opacity: 0.7;
+  transition: opacity 0.3s ease-in-out;
+}
+#breadcrumb .highlight {
+  color: gray;
+}
+#breadcrumb a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#breadcrumb hr {
+  border: none;
+  /* background-color: var(--dark-grey); */
+  background-image: linear-gradient(
+    to right,
+    var(--dark-grey),
+    var(--dark-grey),
+    transparent,
+    transparent,
+    transparent
+  );
+  height: 0.1em;
+  margin: 0.5em auto;
+}
+
+#breadcrumb:hover {
+  opacity: 1;
+}
+
 @media screen and (min-width: 500px) {
   body {
     max-width: 1080px;

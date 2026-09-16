@@ -168,25 +168,29 @@ button {
   text-align: center;
 }
 
-.products {
+.products,
+.categories {
   margin-top: 2rem;
   padding: 1rem;
 }
 
-.product-list {
+.product-list,
+.category-list {
   display: flex;
   flex-flow: row wrap;
   list-style-type: none;
   justify-content: center;
 }
 
-.product-list a {
+.product-list a,
+.category-list a {
   text-decoration: none;
   color: var(--dark-grey);
 }
 
 /* Styles for product lists */
-.product-card {
+.product-card,
+.category-card {
   flex: 1 1 45%;
   margin: 0.25em;
   padding: 0.5em;
@@ -206,7 +210,8 @@ button {
 
 .product-card h2,
 .product-card h3,
-.product-card p {
+.product-card p,
+.category-card h2 {
   margin: 0.5em 0;
 }
 

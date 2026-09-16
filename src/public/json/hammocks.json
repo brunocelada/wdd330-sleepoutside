@@ -1,0 +1,24 @@
+[
+    {
+        "Id": "1",
+        "NameWithoutBrand": "",
+        "Name": "Empty",
+        "Image": "",
+        "SizesAvailable": {},
+        "Colors": [
+            {
+                "ColorCode": "",
+                "ColorName": ""
+            }
+        ],
+        "DescriptionHtmlSimple": "",
+        "SuggestedRetailPrice": 0,
+        "Brand": {
+            "Id": "1",
+            "LogoSrc": "",
+            "Name": "test"
+        },
+        "ListPrice": 0,
+        "FinalPrice": 0
+    }
+]

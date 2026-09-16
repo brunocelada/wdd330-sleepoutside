@@ -5,7 +5,7 @@ import { getParam, loadHeaderFooter } from "./utils.mjs";
 
 const category = getParam("category");
 
-const dataSource = new ProductData("category");
+const dataSource = new ProductData(category);
 
 const element = document.querySelector(".product-list");
 

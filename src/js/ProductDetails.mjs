@@ -43,8 +43,15 @@ function productDetailsTemplate(product) {
     document.querySelector("#productBrand").textContent = product.Brand.Name;
     document.querySelector("#productName").textContent = product.NameWithoutBrand;
 
+    const sourceMedium = document.querySelector("#productSourceMedium");
+    const sourceLarge = document.querySelector("#productSourceLarge");
+    const sourceExtraLarge = document.querySelector("#productSourceExtraLarge");
+    sourceMedium.srcset = product.Images.PrimaryMedium;
+    sourceLarge.srcset = product.Images.PrimaryLarge;
+    sourceExtraLarge.srcset = product.Images.PrimaryExtraLarge;
+
     const productImage = document.querySelector("#productImage");
-    productImage.src = product.Images.PrimaryExtraLarge;
+    productImage.src = product.Images.PrimarySmall;
     productImage.alt = product.NameWithoutBrand;
     const euroPrice = new Intl.NumberFormat("de-DE",
         {

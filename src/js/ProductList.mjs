@@ -18,8 +18,24 @@ function productCardTemplate(product) {
 
     return `<li class="product-card">
         <a href="/product_pages/?product=${product.Id}">
-            <img src="${product.Images.PrimaryMedium}"
-                alt="Image of ${product.Name}" />
+            <picture>
+                <source
+                    media="(min-width: 940px)"
+                    srcset="${product.Images.PrimaryExtraLarge}"
+                />
+                <source
+                    media="(min-width: 760px)"
+                    srcset="${product.Images.PrimaryLarge}"
+                />
+                <source
+                    media="(min-width: 380px)"
+                    srcset="${product.Images.PrimaryMedium}"
+                />
+                <img
+                    src="${product.Images.PrimarySmall}"
+                    alt="Image of ${product.Name}"
+                />
+            </picture>
             ${discountIndicator}
             <h3 class="card__brand">${product.Brand.Name}</h3>
             <h2 class="card__name">${product.Name}</h2>

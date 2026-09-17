@@ -230,9 +230,14 @@ button {
   max-width: 500px;
   margin: auto;
 }
+.cart-card picture,
+.product-detail picture {
+  display: block;
+}
 
-.product-detail img {
+.product-detail picture img {
   width: 100%;
+  height: auto;
 }
 
 .product-detail h5 {

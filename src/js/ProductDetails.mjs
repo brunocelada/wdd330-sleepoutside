@@ -1,5 +1,6 @@
 import { getLocalStorage, setLocalStorage } from "./utils.mjs";
 import { updateCartCount } from "./cartCount.mjs";
+import { updateBreadcrumb } from "./breadcrumb.mjs";
 
 export default class ProductDetails {
     constructor(productId, dataSource) {
@@ -16,6 +17,8 @@ export default class ProductDetails {
         // 5. The readings from this week explains why we need to use .bind(this), and what happens if we don't use it.
         this.product = await this.dataSource.findProductById(this.productId);
         this.renderProductDetails();
+
+        updateBreadcrumb(this.product.Category);
         document
             .getElementById("addToCart")
             .addEventListener("click", this.addProductToCart.bind(this));
@@ -37,18 +40,28 @@ export default class ProductDetails {
 };
 
 function productDetailsTemplate(product) {
-    document.querySelector("h2").textContent = product.Brand.Name;
-    document.querySelector("h3").textContent = product.NameWithoutBrand;
+    document.querySelector("#productBrand").textContent = product.Brand.Name;
+    document.querySelector("#productName").textContent = product.NameWithoutBrand;
 
-    const productImage = document.getElementById("productImage");
-    productImage.src = product.Image;
+    const sourceMedium = document.querySelector("#productSourceMedium");
+    const sourceLarge = document.querySelector("#productSourceLarge");
+    const sourceExtraLarge = document.querySelector("#productSourceExtraLarge");
+    sourceMedium.srcset = product.Images.PrimaryMedium;
+    sourceLarge.srcset = product.Images.PrimaryLarge;
+    sourceExtraLarge.srcset = product.Images.PrimaryExtraLarge;
+
+    const productImage = document.querySelector("#productImage");
+    productImage.src = product.Images.PrimarySmall;
     productImage.alt = product.NameWithoutBrand;
+    const euroPrice = new Intl.NumberFormat("de-DE",
+        {
+            style: "currency", currency: "EUR",
+        }).format(Number(product.FinalPrice));
+    document.querySelector("#productPrice").textContent = `${euroPrice}`;
+    document.querySelector("#productColor").textContent = product.Colors[0].ColorName;
+    document.querySelector("#productDesc").innerHTML = product.DescriptionHtmlSimple;
 
-    document.getElementById("productPrice").textContent = product.FinalPrice;
-    document.getElementById("productColor").textContent = product.Colors[0].ColorName;
-    document.getElementById("productDesc").innerHTML = product.DescriptionHtmlSimple;
-
-    document.getElementById("addToCart").dataset.id = product.Id;
+    document.querySelector("#addToCart").dataset.id = product.Id;
 };
 
 

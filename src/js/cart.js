@@ -22,13 +22,18 @@ function renderCartContents() {
 
 function cartItemTemplate(item) {
   const newItem = `<li class="cart-card divider">
-  <a href="#" class="cart-card__image">
-    <img
-      src="${item.Image}"
-      alt="${item.Name}"
-    />
-  </a>
-  <a href="#">
+  <a href="/product_pages/?product=${item.Id}">
+            <picture>
+                <source
+                    media="(min-width: 500px)"
+                    srcset="${item.Images.PrimaryMedium}"
+                />
+                <img
+                    src="${item.Images.PrimarySmall}"
+                    alt="Image of ${item.Name}"
+                />
+            </picture>
+  <a href="/product_pages/?product=${item.Id}">
     <h2 class="card__name">${item.Name}</h2>
   </a>
   <p class="cart-card__color">${item.Colors[0].ColorName}</p>
@@ -102,6 +107,7 @@ function addQuantityListeners() {
 async function init() {
   await loadHeaderFooter();
   renderCartContents();
+  updateCartCount();
 }
 
 init();

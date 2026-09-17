@@ -90,7 +90,7 @@ function addQuantityListeners() {
       const quantity = Number(event.target.value);
 
       const cartItems = getLocalStorage("so-cart");
-      const product = cartItems.find((item) => item.Id ===id);
+      const product = cartItems.find((item) => item.Id === id);
 
       if (product) {
         product.quantity = quantity;

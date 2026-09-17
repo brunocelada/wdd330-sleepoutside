@@ -14,6 +14,8 @@ export function updateCartCount() {
         cartCount.classList.add("cart-count");
         cart.appendChild(cartCount);
     }
-
-    cartCount.textContent = cartItems.length;
+    //the backpack reflecting the right count -kd 
+    const totalQuantity = cartItems.reduce(
+        (total, item) => total + (item.quantity || 1), 0);
+        cartCount.textContent = totalQuantity;
 };

@@ -25,10 +25,23 @@ export default class ProductDetails {
     }
     addProductToCart() {
         let cartItems = getLocalStorage("so-cart") || [];
+
         if (!Array.isArray(cartItems)) {
             cartItems = [cartItems];
-        };
-        cartItems.push(this.product);
+        } 
+        //find existing duplicate items in cart -kd
+        const existingItem = cartItems.find(
+            (item) => item.Id === this.product.Id
+        );
+
+        //if item is already in cart add 1 -kd
+        if (existingItem) {
+            existingItem.quantity = (existingItem.quantity || 1) +1;
+        } else {
+            this.product.quantity = 1;
+            cartItems.push(this.product);
+        }
+        
         setLocalStorage("so-cart", cartItems);
 
         updateCartCount();

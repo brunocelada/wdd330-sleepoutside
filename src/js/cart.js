@@ -16,6 +16,7 @@ function renderCartContents() {
   listElement.innerHTML = htmlItems.join("");
 
   addRemoveListeners();
+  addQuantityListeners();
   updateCartCount();
 }
 
@@ -31,12 +32,22 @@ function cartItemTemplate(item) {
     <h2 class="card__name">${item.Name}</h2>
   </a>
   <p class="cart-card__color">${item.Colors[0].ColorName}</p>
-  <p class="cart-card__quantity">qty: 1</p>
+  <p class="cart-card__quantity">
+  qty: 
+    <input
+      type="number"
+      class="quantity-input"
+      data-id="${item.Id}"
+      value="${item.quantity || 1}"
+      min="1"
+    />
+  </p>
   <p class="cart-card__price">$${item.FinalPrice}</p>
   <span class="remove-item" data-id="${item.Id}">Remove &#10006;</span>
 </li>`;
   // Added span X remover item.
-
+  //changed qty from hard coded qty: 1 to template literal qty: ${item.quantity || 1} to increase qty in cart -kd
+  //then changed the whole qty p tag to accept user input to change qty display
   return newItem;
 }
 
@@ -60,6 +71,30 @@ function addRemoveListeners() {
       setLocalStorage("so-cart", cartItems);
       renderCartContents();
       updateCartCount();
+    });
+  });
+}
+
+//update quantity in local storage -kd
+function addQuantityListeners() {
+  const quantityInputs = document.querySelectorAll(".quantity-input");
+
+  quantityInputs.forEach((input) => {
+    input.addEventListener("change", (event) => {
+      const id = event.target.dataset.id;
+      const quantity = Number(event.target.value);
+
+      const cartItems = getLocalStorage("so-cart");
+      const product = cartItems.find((item) => item.Id ===id);
+
+      if (product) {
+        product.quantity = quantity;
+      }
+      setLocalStorage("so-cart", cartItems);
+      updateCartCount();
+
+      //console.log("Product ID:", id);
+      //console.log("Quantity:", quantity);
     });
   });
 }

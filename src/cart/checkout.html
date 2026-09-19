@@ -1,0 +1,27 @@
+<!-- src/cart/checkout.html -->
+<head>
+  <meta charset="UTF-8">
+  <title>SleepOutside | Checkout</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <!-- Load the checkout script as a module -->
+  <script type="module" src="../js/checkout.js" defer></script>
+</head>
+<body>
+  <header class="divider" id="main-header"></header>
+
+  <main class="checkout-main">
+    <form id="checkout-form">
+      <h2>Shipping Information</h2>
+      
+      <label for="fname">First Name:</label>
+      <input type="text" id="fname" name="fname" required>
+
+      <label for="zip">Zip/Postal Code:</label>
+      <input type="text" id="zip" name="zip" required pattern="[0-9]{5}" title="Enter a 5-digit zip code">
+
+      <button type="submit">Submit Order</button>
+    </form>
+  </main>
+
+  <footer id="main-footer"></footer>
+</body>

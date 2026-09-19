@@ -29,8 +29,41 @@ export function getParam(param) {
   return product;
 };
 
-
-if (clear) {
-  parentElement.innerHTML = "";
+export function renderListWithTemplate(templateFn, parentElement, list, position = "afterbegin", clear = false) {
+  const htmlStrings = list.map(templateFn);
+  if (clear) {
+    parentElement.innerHTML = "";
+  };
+  parentElement.insertAdjacentHTML(position, htmlStrings.join(""));
 };
-parentElement.insertAdjacentHTML(position, htmlStrings.join(""));
+
+export function renderWithTemplate(templateFn, parentElement, data, callback) {
+  parentElement.innerHTML = templateFn;
+  if (callback) {
+    callback(data);
+  }
+}
+
+// 2. Asynchronously fetch external HTML partial files
+export async function loadTemplate(path) {
+  const res = await fetch(path);
+  const template = await res.text();
+  return template;
+}
+
+// 3. Load header and footer partials into the DOM
+export async function loadHeaderFooter() {
+  const headerTemplate = await loadTemplate("../partials/header.html");
+  const footerTemplate = await loadTemplate("../partials/footer.html");
+  const headerElement = document.querySelector("#main-header");
+  const footerElement = document.querySelector("#main-footer");
+  renderWithTemplate(headerTemplate, headerElement);
+  renderWithTemplate(footerTemplate, footerElement);
+};
+
+
+// Example helper to calculate discount savings
+export function calculateDiscount(listPrice, finalPrice) {
+  if (!listPrice || listPrice <= finalPrice) return 0;
+  return (listPrice - finalPrice).toFixed(2);
+}

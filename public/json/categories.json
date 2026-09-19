@@ -1,0 +1,26 @@
+[
+    {
+        "Id": "1",
+        "Name": "Tents",
+        "urlName": "tents",
+        "Image": "../images/categories/category-tents.svg"
+    },
+    {
+        "Id": "2",
+        "Name": "Backpacks",
+        "urlName": "backpacks",
+        "Image": "../images/categories/category-backpacks.svg"
+    },
+    {
+        "Id": "3",
+        "Name": "Sleeping Bags",
+        "urlName": "sleeping-bags",
+        "Image": "../images/categories/category-sleeping-bags.svg"
+    },
+    {
+        "Id": "4",
+        "Name": "Hammocks",
+        "urlName": "hammocks",
+        "Image": "../images/categories/category-hammocks.svg"
+    }
+]

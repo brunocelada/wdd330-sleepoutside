@@ -1,5 +1,6 @@
 import { getLocalStorage, setLocalStorage } from "./utils.mjs";
 import { updateCartCount } from "./cartCount.mjs";
+import { updateBreadcrumb } from "./breadcrumb.mjs";
 
 export default class ProductDetails {
     constructor(productId, dataSource) {
@@ -9,23 +10,34 @@ export default class ProductDetails {
     }
     async init() {
         // === DETAILS OF init() ===
-        // 1. The datasource get the details for the current product. 
-        // 2. findProductById will return a promise (we can use await or .then() to process it)
-        // 3. The product details are needed before rendering the HTML
-        // 4. Once the HTML is rendered, we add a EventListener to the Add to Cart button
-        // 5. The readings from this week explains why we need to use .bind(this), and what happens if we don't use it.
+
         this.product = await this.dataSource.findProductById(this.productId);
         this.renderProductDetails();
+
+        updateBreadcrumb(this.product.Category);
         document
             .getElementById("addToCart")
             .addEventListener("click", this.addProductToCart.bind(this));
     }
     addProductToCart() {
         let cartItems = getLocalStorage("so-cart") || [];
+
         if (!Array.isArray(cartItems)) {
             cartItems = [cartItems];
-        };
-        cartItems.push(this.product);
+        }
+        //find existing duplicate items in cart -kd
+        const existingItem = cartItems.find(
+            (item) => item.Id === this.product.Id
+        );
+
+        //if item is already in cart add 1 -kd
+        if (existingItem) {
+            existingItem.quantity = (existingItem.quantity || 1) + 1;
+        } else {
+            this.product.quantity = 1;
+            cartItems.push(this.product);
+        }
+
         setLocalStorage("so-cart", cartItems);
 
         updateCartCount();
@@ -37,19 +49,50 @@ export default class ProductDetails {
 };
 
 function productDetailsTemplate(product) {
-    document.querySelector("h2").textContent = product.Brand.Name;
-    document.querySelector("h3").textContent = product.NameWithoutBrand;
+    document.querySelector("#productBrand").textContent = product.Brand.Name;
+    document.querySelector("#productName").textContent = product.NameWithoutBrand;
 
-    const productImage = document.getElementById("productImage");
-    productImage.src = product.Image;
+    const sourceMedium = document.querySelector("#productSourceMedium");
+    const sourceLarge = document.querySelector("#productSourceLarge");
+    const sourceExtraLarge = document.querySelector("#productSourceExtraLarge");
+    sourceMedium.srcset = product.Images.PrimaryMedium;
+    sourceLarge.srcset = product.Images.PrimaryLarge;
+    sourceExtraLarge.srcset = product.Images.PrimaryExtraLarge;
+
+    const productImage = document.querySelector("#productImage");
+    productImage.src = product.Images.PrimarySmall;
     productImage.alt = product.NameWithoutBrand;
 
-    document.getElementById("productPrice").textContent = product.FinalPrice;
-    document.getElementById("productColor").textContent = product.Colors[0].ColorName;
-    document.getElementById("productDesc").innerHTML = product.DescriptionHtmlSimple;
+    // Check if there's a list price higher than the final price to calculate discount
+    const hasDiscount = product.ListPrice && product.ListPrice > product.FinalPrice;
 
-    document.getElementById("addToCart").dataset.id = product.Id;
-};
+    const formatter = new Intl.NumberFormat("de-DE", {
+        style: "currency",
+        currency: "EUR",
+    });
+
+    const finalPriceFormatted = formatter.format(Number(product.FinalPrice));
+
+    let priceHTML = `<span class="final-price">${finalPriceFormatted}</span>`;
+
+    if (hasDiscount) {
+        const listPriceFormatted = formatter.format(Number(product.ListPrice));
+        const savings = (product.ListPrice - product.FinalPrice).toFixed(2);
+        const percent = Math.round(((product.ListPrice - product.FinalPrice) / product.ListPrice) * 100);
+
+        priceHTML = `
+            <span class="list-price" style="text-decoration: line-through; color: #727272; margin-right: 10px;">${listPriceFormatted}</span>
+            <span class="final-price">${finalPriceFormatted}</span>
+            <p class="discount-flag" style="background-color: #d9534f; color: white; padding: 4px 8px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 0.85rem; margin-top: 5px;">SAVE €${savings} (${percent}%)!</p>
+        `;
+    }
+
+    document.querySelector("#productPrice").innerHTML = priceHTML;
+    document.querySelector("#productColor").textContent = product.Colors[0].ColorName;
+    document.querySelector("#productDesc").innerHTML = product.DescriptionHtmlSimple;
+
+    document.querySelector("#addToCart").dataset.id = product.Id;
+}
 
 
 

@@ -49,10 +49,11 @@ export default class ProductList {
         this.category = category;
         this.listElement = listElement;
         this.dataSource = dataSource;
+        this.sortElement = document.querySelector("#sort-products");
     }
 
     async init() {
-        const list = await this.dataSource.getData(this.category);
+        this.list = await this.dataSource.getData(this.category);
 
         // The TRELLO activity says:
         // "Note that there are more tents in that list than we are currently showing.
@@ -69,16 +70,47 @@ export default class ProductList {
         //     selectedIds.includes(product.Id)
         // );
 
-        this.renderList(list);
+        this.sortProducts(this.sortElement.value);
+
+        this.sortElement.addEventListener("change", () => {
+            this.sortProducts(this.sortElement.value);
+        });
+
         const categoryName = this.category.charAt(0).toUpperCase() + this.category.slice(1);
         document.querySelector(".title").textContent = categoryName;
 
         // BC- BREADCRUMB
-        updateBreadcrumb(this.category, list.length);
+        updateBreadcrumb(this.category, this.list.length);
 
     }
 
     renderList(list) {
+        this.listElement.innerHTML = "";
         renderListWithTemplate(productCardTemplate, this.listElement, list);
+    }
+
+    // JW- PRODUCT SORTING
+    sortProducts(sortOption) {
+        const sortedList = [...this.list];
+
+        switch (sortOption) {
+            case "name-asc":
+                sortedList.sort((a, b) => a.Name.localeCompare(b.Name));
+                break;
+
+            case "name-desc":
+                sortedList.sort((a, b) => b.Name.localeCompare(a.Name));
+                break;
+
+            case "price-asc":
+                sortedList.sort((a, b) => a.FinalPrice - b.FinalPrice);
+                break;
+
+            case "price-desc":
+                sortedList.sort((a, b) => b.FinalPrice - a.FinalPrice);
+                break;
+        }
+
+        this.renderList(sortedList);
     }
 }

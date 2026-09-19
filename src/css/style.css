@@ -90,7 +90,7 @@ p {
   margin-top: -1.3em;
 }
 
-.logo--square > div {
+.logo--square>div {
   margin-top: -1.7em;
 }
 
@@ -230,6 +230,7 @@ button {
   max-width: 500px;
   margin: auto;
 }
+
 .cart-card picture,
 .product-detail picture {
   display: block;
@@ -304,9 +305,11 @@ button {
   opacity: 0.7;
   transition: opacity 0.3s ease-in-out;
 }
+
 #breadcrumb .highlight {
   color: gray;
 }
+
 #breadcrumb a {
   text-decoration: none;
   cursor: pointer;
@@ -315,14 +318,12 @@ button {
 #breadcrumb hr {
   border: none;
   /* background-color: var(--dark-grey); */
-  background-image: linear-gradient(
-    to right,
-    var(--dark-grey),
-    var(--dark-grey),
-    transparent,
-    transparent,
-    transparent
-  );
+  background-image: linear-gradient(to right,
+      var(--dark-grey),
+      var(--dark-grey),
+      transparent,
+      transparent,
+      transparent);
   height: 0.1em;
   margin: 0.5em auto;
 }
@@ -387,4 +388,25 @@ footer {
 
 .site-alert[hidden] {
   display: none;
+}
+
+/* JW - Product sorting */
+#sort-products {
+  padding: 0.5em 2em 0.5em 0.75em;
+  margin: 0.5em 0 1.5em 0.5em;
+  border: 1px solid var(--light-grey);
+  border-radius: 0.25em;
+  background-color: white;
+  color: var(--dark-grey);
+  font: inherit;
+  cursor: pointer;
+}
+
+#sort-products:hover {
+  border-color: var(--secondary-color);
+}
+
+#sort-products:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
 }

@@ -50,34 +50,17 @@ export default class ProductList {
         this.listElement = listElement;
         this.dataSource = dataSource;
     }
-
     async init() {
         const list = await this.dataSource.getData(this.category);
 
-        // The TRELLO activity says:
-        // "Note that there are more tents in that list than we are currently showing.
-        // You should NOT display the extras as we do not have detail pages for those yet."
-
-        // REMOVED BECAUSE THE EXPANSION OF THE INVENTORY
-        // const selectedIds = [
-        //     "880RR",
-        //     "985RF",
-        //     "985PR",
-        //     "344YJ"
-        // ];
-        // const filteredList = list.filter(product =>
-        //     selectedIds.includes(product.Id)
-        // );
-
         this.renderList(list);
-        const categoryName = this.category.charAt(0).toUpperCase() + this.category.slice(1);
-        document.querySelector(".title").textContent = categoryName;
 
-        // BC- BREADCRUMB
-        updateBreadcrumb(this.category, list.length);
-
+        if (this.category) {
+            const categoryName = this.category.charAt(0).toUpperCase() + this.category.slice(1);
+            document.querySelector(".title").textContent = categoryName;
+            updateBreadcrumb(this.category, list.length);
+        }
     }
-
     renderList(list) {
         renderListWithTemplate(productCardTemplate, this.listElement, list);
     }

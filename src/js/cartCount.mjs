@@ -14,8 +14,11 @@ export function updateCartCount() {
         cartCount.classList.add("cart-count");
         cart.appendChild(cartCount);
     }
-    //the backpack reflecting the right count -kd 
+
+    // Calculate total quantity across items (accounting for duplicate item increments)
     const totalQuantity = cartItems.reduce(
-        (total, item) => total + (item.quantity || 1), 0);
+        (total, item) => total + (item.quantity || 1), 0
+    );
+
     cartCount.textContent = totalQuantity;
 };

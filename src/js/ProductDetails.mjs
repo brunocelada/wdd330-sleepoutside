@@ -28,7 +28,7 @@ export default class ProductDetails {
 
         if (!Array.isArray(cartItems)) {
             cartItems = [cartItems];
-        } 
+        }
         //find existing duplicate items in cart -kd
         const existingItem = cartItems.find(
             (item) => item.Id === this.product.Id
@@ -36,12 +36,12 @@ export default class ProductDetails {
 
         //if item is already in cart add 1 -kd
         if (existingItem) {
-            existingItem.quantity = (existingItem.quantity || 1) +1;
+            existingItem.quantity = (existingItem.quantity || 1) + 1;
         } else {
             this.product.quantity = 1;
             cartItems.push(this.product);
         }
-        
+
         setLocalStorage("so-cart", cartItems);
 
         updateCartCount();
@@ -50,7 +50,7 @@ export default class ProductDetails {
         // Method to populate the HTML with product details.
         productDetailsTemplate(this.product);
     }
-};
+}
 
 function productDetailsTemplate(product) {
     document.querySelector("#productBrand").textContent = product.Brand.Name;
@@ -75,7 +75,7 @@ function productDetailsTemplate(product) {
     document.querySelector("#productDesc").innerHTML = product.DescriptionHtmlSimple;
 
     document.querySelector("#addToCart").dataset.id = product.Id;
-};
+}
 
 
 

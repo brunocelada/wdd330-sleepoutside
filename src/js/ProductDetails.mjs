@@ -1,4 +1,4 @@
-import { getLocalStorage, setLocalStorage } from "./utils.mjs";
+import { getLocalStorage, setLocalStorage, alertMessage } from "./utils.mjs";
 import { updateCartCount } from "./cartCount.mjs";
 import { updateBreadcrumb } from "./breadcrumb.mjs";
 
@@ -43,8 +43,8 @@ export default class ProductDetails {
         }
 
         setLocalStorage("so-cart", cartItems);
-
         updateCartCount();
+        alertMessage("Product added to cart");
     }
     renderProductDetails() {
         // Method to populate the HTML with product details.

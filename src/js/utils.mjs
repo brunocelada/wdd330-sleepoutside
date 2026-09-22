@@ -39,7 +39,7 @@ export function renderListWithTemplate(templateFn, parentElement, list, position
 
 export function renderWithTemplate(templateFn, parentElement, data, callback) {
   parentElement.innerHTML = templateFn;
-  if(callback){
+  if (callback) {
     callback(data);
   }
 }
@@ -51,11 +51,35 @@ export async function loadTemplate(path) {
 };
 
 export async function loadHeaderFooter() {
-const headerTemplate = await loadTemplate("../partials/header.html");
-const footerTemplate = await loadTemplate("../partials/footer.html");
-const headerElement = document.querySelector("#main-header");
-const footerElement = document.querySelector("#main-footer");
-renderWithTemplate(headerTemplate, headerElement);
-renderWithTemplate(footerTemplate, footerElement);
+  const headerTemplate = await loadTemplate("../partials/header.html");
+  const footerTemplate = await loadTemplate("../partials/footer.html");
+  const headerElement = document.querySelector("#main-header");
+  const footerElement = document.querySelector("#main-footer");
+  renderWithTemplate(headerTemplate, headerElement);
+  renderWithTemplate(footerTemplate, footerElement);
+};
+
+export function alertMessage(message, scroll = true) {
+  const alert = document.createElement("div");
+  alert.classList.add("alert-message");
+
+  alert.innerHTML = `
+  <span>${message}</span>
+  <button type="button" class="alert-close">&#10006;</button>
+  `;
+
+  const main = document.querySelector("main");
+  if (!main) {
+    return;
+  }
+  main.prepend(alert);
+
+  alert.querySelector(".alert-close").addEventListener("click", () => {
+    alert.remove();
+  });
+
+  if (scroll) {
+    window.scrollTo(0, 0);
+  }
 };
 

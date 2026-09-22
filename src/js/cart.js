@@ -1,7 +1,7 @@
 import {
   getLocalStorage,
   setLocalStorage,
-  loadHeaderFooter,
+  loadHeaderFooter, alertMessage
 } from "./utils.mjs";
 import { updateCartCount } from "./cartCount.mjs";
 
@@ -84,6 +84,7 @@ function addRemoveListeners() {
       renderCartContents();
       updateCartCount();
       updateCartTotal();
+      alertMessage("Item removed.");
     });
   });
 }
@@ -141,9 +142,8 @@ init();
 if (checkout_button) {
   checkout_button.addEventListener("click", () => {
     const cartItems = getLocalStorage("so-cart");
-    const listElement = document.querySelector(".product-list");
     if (!cartItems || cartItems.length === 0) {
-      listElement.innerHTML = "<span>You need items in your cart!</span>";
+      alertMessage("Your cart is empty!");
     } else {
       window.location.href = "/checkout/index.html";
     }

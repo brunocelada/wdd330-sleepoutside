@@ -1,5 +1,5 @@
 import { updateCartCount } from "./cartCount.mjs";
-import { loadHeaderFooter } from "./utils.mjs";
+import { getLocalStorage, loadHeaderFooter, alertMessage } from "./utils.mjs";
 import CheckoutProcess from "./CheckoutProcess.mjs";
 
 const checkout_button = document.querySelector("#checkout-button");
@@ -12,50 +12,61 @@ if (checkout_button) {
 const checkout = new CheckoutProcess("so-cart", "#checkout-form");
 
 const form = document.querySelector("#checkout-form");
+if (form) {
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-form.addEventListener("submit", async (event) => {
-  event.preventDefault();
+    const myForm = document.forms[0];
+    const chk_status = myForm.checkValidity();
+    myForm.reportValidity();
 
-  const fName = document.getElementById("fname").value.trim();
-  const lName = document.getElementById("lname").value.trim();
+    const fName = document.getElementById("fname").value.trim();
+    const lName = document.getElementById("lname").value.trim();
 
-  const street = document.getElementById("street").value.trim();
-  const city = document.getElementById("city").value.trim();
-  const state = document.getElementById("state").value.trim();
-  const zip = document.getElementById("zip").value.trim();
+    const street = document.getElementById("street").value.trim();
+    const city = document.getElementById("city").value.trim();
+    const state = document.getElementById("state").value.trim();
+    const zip = document.getElementById("zip").value.trim();
 
-  const cardNumber = document.getElementById("cardNumber").value.trim();
-  const expiration = document.getElementById("expiration").value.trim();
-  const code = document.getElementById("code").value.trim();
+    const cardNumber = document.getElementById("cardNumber").value.trim();
+    const expiration = document.getElementById("expiration").value.trim();
+    const code = document.getElementById("code").value.trim();
 
-  if (
-    !fName ||
-    !lName ||
-    !street ||
-    !city ||
-    !state ||
-    !zip ||
-    !cardNumber ||
-    !expiration ||
-    !code
-  ) {
-    alert("Please fill out all required fields.");
-    return;
-  }
-  try {
-    await checkout.checkout(form);
-    // const response = await checkout.checkout(form);
-    // console.log("Checkout response: ", response);
-    alert("Order placed successfully!");
+    const cartItems = getLocalStorage("so-cart");
+    if (!cartItems || cartItems.length === 0) {
+      alertMessage("The cart is empty!");
+      window.location.href = "/cart/index.html";
+    }
 
-    // Uncomment once it works
-    //localStorage.removeItem("so-cart");
-    updateCartCount();
-  } catch (error) {
-    // console.error("Checkout error: ", error);
-    alert("There was a problem placing your order.");
-  }
-});
+    if (
+      !fName ||
+      !lName ||
+      !street ||
+      !city ||
+      !state ||
+      !zip ||
+      !cardNumber ||
+      !expiration ||
+      !code
+    ) {
+      alertMessage("Please fill out all required fields.");
+      return;
+    }
+    try {
+      if (chk_status) {
+        await checkout.checkout(form);
+        // const response = await checkout.checkout(form);
+        // console.log("Checkout response: ", response);
+      }
+      // alert("Order placed successfully!");
+      localStorage.removeItem("so-cart");
+      window.location.href = "/checkout/success.html";
+    } catch (error) {
+      // console.error("Checkout error: ", error);
+      alertMessage("There was a problem placing your order.");
+    }
+  })
+};
 
 async function init() {
   await loadHeaderFooter();

@@ -1,4 +1,4 @@
-import { getLocalStorage } from "./utils.mjs";
+import { getLocalStorage, alertMessage } from "./utils.mjs";
 import ExternalServices from "./ExternalServices.mjs";
 
 export default class CheckoutProcess {
@@ -69,22 +69,28 @@ export default class CheckoutProcess {
         }));
     }
     async checkout(form) {
-        const formData = new FormData(form);
-        const order = {};
+        try {
+            const formData = new FormData(form);
+            const order = {};
 
-        formData.forEach((value, key) => {
-            order[key] = value;
-        });
-        order.orderDate = new Date().toISOString();
+            formData.forEach((value, key) => {
+                order[key] = value;
+            });
+            order.orderDate = new Date().toISOString();
 
-        order.orderTotal = Number(this.orderTotal.toFixed(2));
-        order.tax = Number(this.tax.toFixed(2));
-        order.shipping = Number(this.shipping.toFixed(2));
+            order.orderTotal = Number(this.orderTotal.toFixed(2));
+            order.tax = Number(this.tax.toFixed(2));
+            order.shipping = Number(this.shipping.toFixed(2));
 
-        order.items = this.packageItems(this.list);
+            order.items = this.packageItems(this.list);
 
-        // console.log("ORDER SENT:", order);
-        const response = await ExternalServices.checkout(order);
-        return response;
+            // console.log("ORDER SENT:", order);
+            const response = await ExternalServices.checkout(order);
+            return response;
+        } catch (error) {
+            // console.error("Checkout error: ", error);
+            alertMessage("There was a problem placing your order.");
+        }
+
     }
 }

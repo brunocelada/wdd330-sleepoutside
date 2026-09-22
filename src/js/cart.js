@@ -1,4 +1,8 @@
-import { getLocalStorage, setLocalStorage, loadHeaderFooter } from "./utils.mjs";
+import {
+  getLocalStorage,
+  setLocalStorage,
+  loadHeaderFooter,
+} from "./utils.mjs";
 import { updateCartCount } from "./cartCount.mjs";
 
 const checkout_button = document.querySelector("#checkout-button");
@@ -117,12 +121,12 @@ function updateCartTotal() {
       cartItems.forEach((item) => {
         subtotal_val += item.quantity * item.ListPrice;
       });
-      orderTotal.innerHTML = new Intl.NumberFormat("de-DE",
-        {
-          style: "currency", currency: "EUR",
-        }).format(Number(subtotal_val.toFixed(2)));
+      orderTotal.innerHTML = new Intl.NumberFormat("de-DE", {
+        style: "currency",
+        currency: "EUR",
+      }).format(Number(subtotal_val.toFixed(2)));
     }
-  };
+  }
 }
 
 async function init() {
@@ -144,8 +148,4 @@ if (checkout_button) {
       window.location.href = "/checkout/index.html";
     }
   });
-};
-
-
-
-
+}

@@ -41,7 +41,8 @@ export default class ExternalServices {
     };
     const response = await fetch(`${baseURL}/checkout`, options);
     if (!response.ok) {
-      const errorText = await response.text();
+      await response.text();
+      // const errorText = await response.text();
       // console.error("Checkout server response:", errorText,);
       throw new Error(`Checkout failed: ${response.status}`,);
     }

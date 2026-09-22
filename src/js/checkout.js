@@ -6,13 +6,10 @@ const checkout_button = document.querySelector("#checkout-button");
 if (checkout_button) {
   checkout_button.addEventListener("click", () => {
     window.location.href = "/cart/index.html";
-  })
-};
+  });
+}
 
-const checkout = new CheckoutProcess(
-  "so-cart",
-  "#checkout-form",
-);
+const checkout = new CheckoutProcess("so-cart", "#checkout-form");
 
 const form = document.querySelector("#checkout-form");
 
@@ -31,12 +28,23 @@ form.addEventListener("submit", async (event) => {
   const expiration = document.getElementById("expiration").value.trim();
   const code = document.getElementById("code").value.trim();
 
-  if (!fName || !lName || !street || !city || !state || !zip || !cardNumber || !expiration || !code) {
+  if (
+    !fName ||
+    !lName ||
+    !street ||
+    !city ||
+    !state ||
+    !zip ||
+    !cardNumber ||
+    !expiration ||
+    !code
+  ) {
     alert("Please fill out all required fields.");
     return;
   }
   try {
-    const response = await checkout.checkout(form);
+    await checkout.checkout(form);
+    // const response = await checkout.checkout(form);
     // console.log("Checkout response: ", response);
     alert("Order placed successfully!");
 
@@ -55,7 +63,7 @@ async function init() {
 
   checkout.init();
   checkout.calculateOrderTotal();
-};
+}
 
 init();
 
@@ -101,4 +109,3 @@ init();
 //     }).format(Number((tax_value + subtotal_val + shipping_val).toFixed(2)));
 
 // };
-

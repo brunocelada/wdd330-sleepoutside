@@ -110,3 +110,15 @@ async function init() {
 }
 
 init();
+
+const checkout_button = document.querySelector("#checkout-button");
+checkout_button.addEventListener("click", () => {
+  const cartItems = getLocalStorage("so-cart");
+  const listElement = document.querySelector(".product-list");
+  if (!cartItems || cartItems.length === 0) {
+    listElement.innerHTML = "<span>You need items in your cart!</span>";
+  } else {
+    window.location.href = "/checkout/index.html";
+  }
+
+});

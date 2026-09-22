@@ -90,7 +90,7 @@ p {
   margin-top: -1.3em;
 }
 
-.logo--square>div {
+.logo--square > div {
   margin-top: -1.7em;
 }
 
@@ -180,6 +180,10 @@ button {
   flex-flow: row wrap;
   list-style-type: none;
   justify-content: center;
+}
+.product-list span {
+  font-weight: bold;
+  color: var(--tertiary-color);
 }
 
 .product-list a,
@@ -318,12 +322,14 @@ button {
 #breadcrumb hr {
   border: none;
   /* background-color: var(--dark-grey); */
-  background-image: linear-gradient(to right,
-      var(--dark-grey),
-      var(--dark-grey),
-      transparent,
-      transparent,
-      transparent);
+  background-image: linear-gradient(
+    to right,
+    var(--dark-grey),
+    var(--dark-grey),
+    transparent,
+    transparent,
+    transparent
+  );
   height: 0.1em;
   margin: 0.5em auto;
 }
@@ -409,4 +415,67 @@ footer {
 #sort-products:focus {
   outline: 2px solid var(--primary-color);
   outline-offset: 2px;
+}
+
+/* CHECKOUT */
+#checkout-button {
+  background-color: var(--primary-color);
+  transition: background-color 0.1s ease-in-out;
+  padding: 0.2em;
+  margin-top: 0.5em;
+  border-radius: 5px;
+  text-decoration: none;
+  color: var(--dark-grey);
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+    background-color: var(--light-grey);
+  }
+}
+/* Checkout Form */
+#checkout-form {
+  margin: 1em;
+  padding: 0.5em 1em;
+  color: white;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+
+  > * {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+  label,
+  input {
+    min-width: 300px;
+    font-size: large;
+    margin: 0.1em auto;
+    padding: 0.1em;
+  }
+  input {
+    border: 2px solid;
+    border-radius: 5px;
+    border-color: var(--dark-grey);
+    &:valid {
+      border-color: green;
+    }
+    &:focus:invalid {
+      border-color: red;
+    }
+  }
+  .form-group {
+    background-color: var(--dark-grey);
+    margin: 1em 0;
+    padding: 1em 0;
+    border: 2px solid black;
+    border-radius: 10px;
+    p {
+      font-weight: bold;
+      padding: 0.3em 0;
+
+      span {
+        color: rgb(255, 248, 34);
+      }
+    }
+  }
 }

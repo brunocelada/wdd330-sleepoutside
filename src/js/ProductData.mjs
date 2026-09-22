@@ -16,7 +16,7 @@ export default class ProductData {
     // this.path = `/json/${this.category}.json`;
   }
   async getData(category) {
-    const response = await fetch(`${baseURL}products/search/${category} `);
+    const response = await fetch(`${baseURL}products/search/${category}`); //removing space here to see if this is throwing my error -kd
     const data = await convertToJson(response);
     return data.Result;
     // return fetch(this.path)

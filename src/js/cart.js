@@ -23,16 +23,18 @@ function renderCartContents() {
 function cartItemTemplate(item) {
   const newItem = `<li class="cart-card divider">
   <a href="/product_pages/?product=${item.Id}">
-            <picture>
-                <source
-                    media="(min-width: 500px)"
-                    srcset="${item.Images.PrimaryMedium}"
-                />
-                <img
-                    src="${item.Images.PrimarySmall}"
-                    alt="Image of ${item.Name}"
-                />
-            </picture>
+    <picture>
+        <source
+            media="(min-width: 500px)"
+            srcset="${item.Images.PrimaryMedium}"
+        />
+        <img
+            src="${item.Images.PrimarySmall}"
+            alt="Image of ${item.Name}"
+        />
+        
+    </picture>
+  </a>
   <a href="/product_pages/?product=${item.Id}">
     <h2 class="card__name">${item.Name}</h2>
   </a>

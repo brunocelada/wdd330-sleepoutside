@@ -7,6 +7,7 @@ export default class CheckoutProcess {
         this.outputSelector = outputSelector;
         this.list = [];
         this.itemTotal = 0;
+        this.itemCount = 0;
         this.shipping = 0;
         this.tax = 0;
         this.orderTotal = 0;
@@ -15,7 +16,6 @@ export default class CheckoutProcess {
         this.list = getLocalStorage(this.key) || [];
         this.calculateItemSubTotal();
     }
-
     calculateItemSubTotal() {
         this.itemTotal = 0;
         this.itemCount = 0;
@@ -24,21 +24,17 @@ export default class CheckoutProcess {
             this.itemTotal += item.quantity * item.ListPrice;
             this.itemCount += item.quantity;
         });
-
         this.displayOrderTotals();
     }
     calculateOrderTotal() {
         this.tax = this.itemTotal * .06;
-
         if (this.itemCount > 0) {
             this.shipping = 10 + (this.itemCount - 1) * 2;
         } else {
             this.shipping = 0;
         }
-
         // Total
         this.orderTotal = this.itemTotal + this.tax + this.shipping;
-
         this.displayOrderTotals();
     }
     displayOrderTotals() {
@@ -64,7 +60,6 @@ export default class CheckoutProcess {
                 style: "currency", currency: "EUR",
             }).format(Number(this.orderTotal.toFixed(2)));
     }
-
     packageItems(items) {
         return items.map((item) => ({
             id: item.Id,
@@ -73,7 +68,6 @@ export default class CheckoutProcess {
             quantity: item.quantity,
         }));
     }
-
     async checkout(form) {
         const formData = new FormData(form);
         const order = {};
@@ -83,14 +77,14 @@ export default class CheckoutProcess {
         });
         order.orderDate = new Date().toISOString();
 
-        order.orderTotal = this.orderTotal.toFixed(2);
-        order.tax = this.tax.toFixed(2);
-        order.shipping = this.shipping.toFixed(2);
+        order.orderTotal = Number(this.orderTotal.toFixed(2));
+        order.tax = Number(this.tax.toFixed(2));
+        order.shipping = Number(this.shipping.toFixed(2));
 
         order.items = this.packageItems(this.list);
 
+        // console.log("ORDER SENT:", order);
         const response = await ExternalServices.checkout(order);
-
         return response;
     }
 }

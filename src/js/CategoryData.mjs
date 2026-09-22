@@ -1,4 +1,4 @@
-import { convertToJson } from "./ProductData.mjs";
+import { convertToJson } from "./ExternalServices.mjs";
 
 export default class CategoryData {
   constructor() {

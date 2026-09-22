@@ -1,6 +1,5 @@
 const baseURL = import.meta.env.VITE_SERVER_URL
 
-
 export function convertToJson(res) {
   if (res.ok) {
     return res.json();
@@ -9,14 +8,14 @@ export function convertToJson(res) {
   }
 };
 
-export default class ProductData {
+export default class ExternalServices {
   constructor() {
     // constructor(category){
     // this.category = category;
     // this.path = `/json/${this.category}.json`;
   }
   async getData(category) {
-    const response = await fetch(`${baseURL}products/search/${category} `);
+    const response = await fetch(`${baseURL}/products/search/${category}`);
     const data = await convertToJson(response);
     return data.Result;
     // return fetch(this.path)
@@ -24,12 +23,28 @@ export default class ProductData {
     //   .then((data) => data.Result || data);
   }
   async findProductById(id) {
-    const response = await fetch(`${baseURL}product/${id}`);
+    const response = await fetch(`${baseURL}/product/${id}`);
     const data = await convertToJson(response);
     // console.log(data.Result);
     return data.Result;
 
     // const products = await this.getData();
     // return products.find((item) => item.Id === id);
+  }
+  static async checkout(order) {
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(order),
+    };
+    const response = await fetch(`${baseURL}/checkout`, options);
+    if (!response.ok) {
+      const errorText = await response.text();
+      // console.error("Checkout server response:", errorText,);
+      throw new Error(`Checkout failed: ${response.status}`,);
+    }
+    return response.json();
   }
 };

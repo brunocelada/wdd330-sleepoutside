@@ -444,10 +444,12 @@ footer {
     align-items: center;
     display: flex;
     flex-direction: column;
+    min-width: 600px;
+    justify-self: center;
   }
   label,
   input {
-    min-width: 300px;
+    min-width: 200px;
     font-size: large;
     margin: 0.1em auto;
     padding: 0.1em;
@@ -478,4 +480,13 @@ footer {
       }
     }
   }
+}
+.list-footer {
+  text-align: center;
+  p {
+    font-weight: bold;
+  }
+}
+#order-total {
+  color: var(--tertiary-color);
 }

@@ -1,82 +1,104 @@
 import { updateCartCount } from "./cartCount.mjs";
-import { getLocalStorage, loadHeaderFooter } from "./utils.mjs";
+import { loadHeaderFooter } from "./utils.mjs";
+import CheckoutProcess from "./CheckoutProcess.mjs";
+
+const checkout_button = document.querySelector("#checkout-button");
+if (checkout_button) {
+  checkout_button.addEventListener("click", () => {
+    window.location.href = "/cart/index.html";
+  })
+};
+
+const checkout = new CheckoutProcess(
+  "so-cart",
+  "#checkout-form",
+);
 
 const form = document.querySelector("#checkout-form");
 
-form.addEventListener("submit", function (event) {
-  const fName = document.getElementById("fname").value;
-  const lName = document.getElementById("lname").value;
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
 
-  const street = document.getElementById("street").value;
-  const city = document.getElementById("city").value;
-  const state = document.getElementById("state").value;
-  const zip = document.getElementById("zip").value;
+  const fName = document.getElementById("fname").value.trim();
+  const lName = document.getElementById("lname").value.trim();
 
-  const card_num = document.getElementById("card_num").value;
-  const expiration = document.getElementById("expiration").value;
-  const cvv = document.getElementById("cvv").value;
+  const street = document.getElementById("street").value.trim();
+  const city = document.getElementById("city").value.trim();
+  const state = document.getElementById("state").value.trim();
+  const zip = document.getElementById("zip").value.trim();
 
-  if (!fName || !lName || !street || !city || !state || !zip || !card_num || !expiration || !cvv) {
-    event.preventDefault();
+  const cardNumber = document.getElementById("cardNumber").value.trim();
+  const expiration = document.getElementById("expiration").value.trim();
+  const code = document.getElementById("code").value.trim();
+
+  if (!fName || !lName || !street || !city || !state || !zip || !cardNumber || !expiration || !code) {
     alert("Please fill out all required fields.");
+    return;
   }
-  // To prevent user's manipulation.
-  calculateCheckout();
+  try {
+    const response = await checkout.checkout(form);
+    // console.log("Checkout response: ", response);
+    alert("Order placed successfully!");
+
+    // Uncomment once it works
+    //localStorage.removeItem("so-cart");
+    updateCartCount();
+  } catch (error) {
+    // console.error("Checkout error: ", error);
+    alert("There was a problem placing your order.");
+  }
 });
-
-function calculateCheckout() {
-  const cartItems = getLocalStorage("so-cart") || [];
-
-  const subtotal = document.getElementById("subtotal");
-  const tax = document.getElementById("tax");
-  const shipping = document.getElementById("shipping");
-  const orderTotal = document.getElementById("order-total");
-
-  let subtotal_val = 0;
-  let shipping_val = 0;
-  let shipping_count = 0;
-
-  cartItems.forEach((item) => {
-    subtotal_val += item.quantity * item.ListPrice;
-    shipping_count += item.quantity;
-
-  });
-  if (shipping_count === 1) {
-    shipping_val = 10;
-  } else {
-    shipping_val = 10 + 2 * (shipping_count - 1);
-  }
-  let tax_value = subtotal_val * .06
-
-  subtotal.innerHTML = new Intl.NumberFormat("de-DE",
-    {
-      style: "currency", currency: "EUR",
-    }).format(Number(subtotal_val.toFixed(2)));
-  tax.innerHTML = new Intl.NumberFormat("de-DE",
-    {
-      style: "currency", currency: "EUR",
-    }).format(Number(tax_value.toFixed(2)));
-  shipping.innerHTML = new Intl.NumberFormat("de-DE",
-    {
-      style: "currency", currency: "EUR",
-    }).format(Number(shipping_val.toFixed(2)));
-  orderTotal.innerHTML = new Intl.NumberFormat("de-DE",
-    {
-      style: "currency", currency: "EUR",
-    }).format(Number((tax_value + subtotal_val + shipping_val).toFixed(2)));
-
-};
 
 async function init() {
   await loadHeaderFooter();
   updateCartCount();
-  calculateCheckout();
+
+  checkout.init();
+  checkout.calculateOrderTotal();
 };
 
 init();
 
-const checkout_button = document.querySelector("#checkout-button");
-checkout_button.addEventListener("click", () => {
-  window.location.href = "/cart/index.html";
-});
+// function calculateCheckout() {
+//   const cartItems = getLocalStorage("so-cart") || [];
+
+//   const subtotal = document.getElementById("subtotal");
+//   const tax = document.getElementById("tax");
+//   const shipping = document.getElementById("shipping");
+//   const orderTotal = document.getElementById("order-total");
+
+//   let subtotal_val = 0;
+//   let shipping_val = 0;
+//   let shipping_count = 0;
+
+//   cartItems.forEach((item) => {
+//     subtotal_val += item.quantity * item.ListPrice;
+//     shipping_count += item.quantity;
+
+//   });
+//   if (shipping_count === 1) {
+//     shipping_val = 10;
+//   } else {
+//     shipping_val = 10 + 2 * (shipping_count - 1);
+//   }
+//   let tax_value = subtotal_val * .06
+
+//   subtotal.innerHTML = new Intl.NumberFormat("de-DE",
+//     {
+//       style: "currency", currency: "EUR",
+//     }).format(Number(subtotal_val.toFixed(2)));
+//   tax.innerHTML = new Intl.NumberFormat("de-DE",
+//     {
+//       style: "currency", currency: "EUR",
+//     }).format(Number(tax_value.toFixed(2)));
+//   shipping.innerHTML = new Intl.NumberFormat("de-DE",
+//     {
+//       style: "currency", currency: "EUR",
+//     }).format(Number(shipping_val.toFixed(2)));
+//   orderTotal.innerHTML = new Intl.NumberFormat("de-DE",
+//     {
+//       style: "currency", currency: "EUR",
+//     }).format(Number((tax_value + subtotal_val + shipping_val).toFixed(2)));
+
+// };
 

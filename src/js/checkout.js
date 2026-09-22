@@ -65,8 +65,8 @@ if (form) {
       // console.error("Checkout error: ", error);
       alertMessage("There was a problem placing your order.");
     }
-  })
-};
+  });
+}
 
 async function init() {
   await loadHeaderFooter();

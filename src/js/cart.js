@@ -1,7 +1,8 @@
 import {
   getLocalStorage,
   setLocalStorage,
-  loadHeaderFooter, alertMessage
+  loadHeaderFooter,
+  alertMessage,
 } from "./utils.mjs";
 import { updateCartCount } from "./cartCount.mjs";
 

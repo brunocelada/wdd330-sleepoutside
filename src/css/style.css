@@ -90,7 +90,7 @@ p {
   margin-top: -1.3em;
 }
 
-.logo--square>div {
+.logo--square > div {
   margin-top: -1.7em;
 }
 
@@ -318,12 +318,14 @@ button {
 #breadcrumb hr {
   border: none;
   /* background-color: var(--dark-grey); */
-  background-image: linear-gradient(to right,
-      var(--dark-grey),
-      var(--dark-grey),
-      transparent,
-      transparent,
-      transparent);
+  background-image: linear-gradient(
+    to right,
+    var(--dark-grey),
+    var(--dark-grey),
+    transparent,
+    transparent,
+    transparent
+  );
   height: 0.1em;
   margin: 0.5em auto;
 }

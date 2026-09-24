@@ -1,5 +1,13 @@
-import { getLocalStorage, setLocalStorage, loadHeaderFooter } from "./utils.mjs";
+import {
+  getLocalStorage,
+  setLocalStorage,
+  loadHeaderFooter,
+  alertMessage,
+} from "./utils.mjs";
 import { updateCartCount } from "./cartCount.mjs";
+
+const checkout_button = document.querySelector("#checkout-button");
+const orderTotal = document.querySelector("#order-total");
 
 function renderCartContents() {
   const cartItems = getLocalStorage("so-cart");
@@ -17,6 +25,7 @@ function renderCartContents() {
   addRemoveListeners();
   addQuantityListeners();
   updateCartCount();
+  updateCartTotal();
 }
 
 function cartItemTemplate(item) {
@@ -75,6 +84,8 @@ function addRemoveListeners() {
       setLocalStorage("so-cart", cartItems);
       renderCartContents();
       updateCartCount();
+      updateCartTotal();
+      alertMessage("Item removed.");
     });
   });
 }
@@ -96,6 +107,7 @@ function addQuantityListeners() {
       }
       setLocalStorage("so-cart", cartItems);
       updateCartCount();
+      updateCartTotal();
 
       //console.log("Product ID:", id);
       //console.log("Quantity:", quantity);
@@ -103,10 +115,38 @@ function addQuantityListeners() {
   });
 }
 
+function updateCartTotal() {
+  if (orderTotal) {
+    const cartItems = getLocalStorage("so-cart") || [];
+    let subtotal_val = 0;
+    if (cartItems) {
+      cartItems.forEach((item) => {
+        subtotal_val += item.quantity * item.ListPrice;
+      });
+      orderTotal.innerHTML = new Intl.NumberFormat("de-DE", {
+        style: "currency",
+        currency: "EUR",
+      }).format(Number(subtotal_val.toFixed(2)));
+    }
+  }
+}
+
 async function init() {
   await loadHeaderFooter();
   renderCartContents();
   updateCartCount();
+  updateCartTotal();
 }
 
 init();
+
+if (checkout_button) {
+  checkout_button.addEventListener("click", () => {
+    const cartItems = getLocalStorage("so-cart");
+    if (!cartItems || cartItems.length === 0) {
+      alertMessage("Your cart is empty!");
+    } else {
+      window.location.href = "/checkout/index.html";
+    }
+  });
+}

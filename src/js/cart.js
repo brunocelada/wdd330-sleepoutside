@@ -1,6 +1,5 @@
-import { getLocalStorage, setLocalStorage } from "./utils.mjs";
+import { getLocalStorage, setLocalStorage, loadHeaderFooter } from "./utils.mjs";
 import { updateCartCount } from "./cartCount.mjs";
-import { loadHeaderFooter } from "./utils.mjs";
 
 function renderCartContents() {
   const cartItems = getLocalStorage("so-cart");
@@ -92,7 +91,7 @@ function addQuantityListeners() {
       const quantity = Number(event.target.value);
 
       const cartItems = getLocalStorage("so-cart");
-      const product = cartItems.find((item) => item.Id ===id);
+      const product = cartItems.find((item) => item.Id === id);
 
       if (product) {
         product.quantity = quantity;

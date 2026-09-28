@@ -23,4 +23,3 @@ export default class CategoryList {
         renderListWithTemplate(categoryCardTemplate, this.listElement, list);
     }
 }
-

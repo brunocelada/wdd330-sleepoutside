@@ -17,5 +17,5 @@ export function updateCartCount() {
     //the backpack reflecting the right count -kd 
     const totalQuantity = cartItems.reduce(
         (total, item) => total + (item.quantity || 1), 0);
-        cartCount.textContent = totalQuantity;
+    cartCount.textContent = totalQuantity;
 };

@@ -1,4 +1,4 @@
-import { getLocalStorage, setLocalStorage } from "./utils.mjs";
+import { getLocalStorage, setLocalStorage, alertMessage } from "./utils.mjs";
 import { updateCartCount } from "./cartCount.mjs";
 import { updateBreadcrumb } from "./breadcrumb.mjs";
 
@@ -43,8 +43,8 @@ export default class ProductDetails {
         }
 
         setLocalStorage("so-cart", cartItems);
-
         updateCartCount();
+        alertMessage("Product added to cart");
     }
     renderProductDetails() {
         // Method to populate the HTML with product details.
@@ -53,6 +53,7 @@ export default class ProductDetails {
 }
 
 function productDetailsTemplate(product) {
+    // console.log(product);
     document.querySelector("#productBrand").textContent = product.Brand.Name;
     document.querySelector("#productName").textContent = product.NameWithoutBrand;
 
@@ -66,6 +67,8 @@ function productDetailsTemplate(product) {
     const productImage = document.querySelector("#productImage");
     productImage.src = product.Images.PrimarySmall;
     productImage.alt = product.NameWithoutBrand;
+    createImageCarousel(product);
+
     const euroPrice = new Intl.NumberFormat("de-DE",
         {
             style: "currency", currency: "EUR",
@@ -75,6 +78,56 @@ function productDetailsTemplate(product) {
     document.querySelector("#productDesc").innerHTML = product.DescriptionHtmlSimple;
 
     document.querySelector("#addToCart").dataset.id = product.Id;
+}
+// BC-C: if there are ExtraImages in the data for a product, the product image on
+// the product details page change to a carousel and all images are shown as options.
+function createImageCarousel(product) {
+    const extraImages = product.Images.ExtraImages;
+
+    if (!extraImages || extraImages.length === 0) {
+        return;
+    }
+
+    const container = document.querySelector("#productImageOptions");
+    const productImage = document.querySelector("#productImage");
+
+    const images = [
+        {
+            Title: product.NameWithoutBrand,
+            Src: product.Images.PrimarySmall,
+            PrimaryMedium: product.Images.PrimaryMedium,
+            PrimaryLarge: product.Images.PrimaryLarge,
+            PrimaryExtraLarge: product.Images.PrimaryExtraLarge
+        },
+        ...(product.Images.ExtraImages || []).map((image) => ({
+            Title: image.Title,
+            Src: image.Src,
+            PrimaryMedium: image.Src,
+            PrimaryLarge: image.Src,
+            PrimaryExtraLarge: image.Src
+        }))
+    ];
+
+    images.forEach((image) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.classList.add("product-image-option");
+
+        const thumbnailImage = document.createElement("img");
+        thumbnailImage.src = image.Src;
+        thumbnailImage.alt = image.Title;
+
+        button.appendChild(thumbnailImage);
+        container.appendChild(button);
+
+        button.addEventListener("click", () => {
+            productImage.src = image.Src;
+            productImage.alt = image.Title;
+            document.querySelector("#productSourceMedium").srcset = (image.PrimaryMedium || image.Src);
+            document.querySelector("#productSourceLarge").srcset = (image.PrimaryLarge || image.Src);
+            document.querySelector("#productSourceExtraLarge").srcset = (image.PrimaryExtraLarge || image.Src);
+        });
+    });
 }
 
 

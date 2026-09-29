@@ -77,20 +77,18 @@ export default class CheckoutProcess {
                 order[key] = value;
             });
             order.orderDate = new Date().toISOString();
-
             order.orderTotal = Number(this.orderTotal.toFixed(2));
             order.tax = Number(this.tax.toFixed(2));
             order.shipping = Number(this.shipping.toFixed(2));
-
             order.items = this.packageItems(this.list);
 
             // console.log("ORDER SENT:", order);
             const response = await ExternalServices.checkout(order);
+
             return response;
         } catch (error) {
-            // console.error("Checkout error: ", error);
-            alertMessage("There was a problem placing your order.");
+            alertMessage(error.message);
+            return null;
         }
-
     }
 }

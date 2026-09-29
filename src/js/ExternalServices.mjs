@@ -18,6 +18,7 @@ export default class ExternalServices {
     // this.category = category;
     // this.path = `/json/${this.category}.json`;
   }
+
   async getData(category) {
     const response = await fetch(`${baseURL}/products/search/${category}`);
     const data = await convertToJson(response);
@@ -26,6 +27,7 @@ export default class ExternalServices {
     //   .then(convertToJson)
     //   .then((data) => data.Result || data);
   }
+
   async findProductById(id) {
     const response = await fetch(`${baseURL}/product/${id}`);
     const data = await convertToJson(response);
@@ -35,6 +37,7 @@ export default class ExternalServices {
     // const products = await this.getData();
     // return products.find((item) => item.Id === id);
   }
+
   static async checkout(order) {
     const options = {
       method: "POST",
@@ -43,13 +46,10 @@ export default class ExternalServices {
       },
       body: JSON.stringify(order),
     };
+
     const response = await fetch(`${baseURL}/checkout`, options);
-    if (!response.ok) {
-      await response.text();
-      // const errorText = await response.text();
-      // console.error("Checkout server response:", errorText,);
-      throw new Error(`Checkout failed: ${response.status}`,);
-    }
-    return response.json();
+    const data = await convertToJson(response);
+
+    return data;
   }
 };

@@ -53,16 +53,19 @@ if (form) {
       return;
     }
     try {
-      if (chk_status) {
-        await checkout.checkout(form);
-        // const response = await checkout.checkout(form);
-        // console.log("Checkout response: ", response);
+      if (!chk_status) {
+        return;
       }
-      // alert("Order placed successfully!");
+
+      const response = await checkout.checkout(form);
+
+      if (!response) {
+        return;
+      }
+
       localStorage.removeItem("so-cart");
       window.location.href = "/checkout/success.html";
     } catch (error) {
-      // console.error("Checkout error: ", error);
       alertMessage("There was a problem placing your order.");
     }
   });

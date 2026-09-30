@@ -59,3 +59,15 @@ renderWithTemplate(headerTemplate, headerElement);
 renderWithTemplate(footerTemplate, footerElement);
 };
 
+export function animateCart(){
+  const backpack = document.querySelector(".cart svg");
+
+  if (!backpack) return;
+
+  backpack.classList.add("cart-animate");
+
+  backpack.addEventListener(
+    "animationend",() => { backpack.classList.remove("cart-animate");},
+    { once: true }
+  );
+}

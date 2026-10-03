@@ -412,3 +412,32 @@ footer {
   outline: 2px solid var(--primary-color);
   outline-offset: 2px;
 }
+
+
+/* Product detail discount */
+
+.product-detail__price {
+  margin-bottom: 0.5rem;
+}
+
+.product-detail__price .product-card__original-price {
+  text-decoration: line-through;
+  margin-right: 0.5rem;
+}
+
+.product-detail__price .product-card__discount-price {
+  font-weight: bold;
+}
+
+/* Discount flag */
+
+.discount-flag {
+  display: inline-block;
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 0.35rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}

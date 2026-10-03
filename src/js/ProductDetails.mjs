@@ -1,83 +1,140 @@
-import { getLocalStorage, setLocalStorage } from "./utils.mjs";
-import { updateCartCount } from "./cartCount.mjs";
+import {
+  getLocalStorage,
+  setLocalStorage,
+  cartSuperscript,
+} from "./utils.mjs";
 
 export default class ProductDetails {
   constructor(productId, dataSource) {
     this.productId = productId;
-    this.product = {};
     this.dataSource = dataSource;
+    this.product = {};
   }
 
   async init() {
-    this.product = await this.dataSource.findProductById(this.productId);
+    const product = await this.dataSource.findProductById(this.productId);
 
-    this.renderProductDetails();
+    this.product = product;
+
+    this.renderProductDetails(product);
+    this.handleBrandCrumbs();
 
     document
       .getElementById("addToCart")
-      .addEventListener("click", this.addProductToCart.bind(this));
+      .addEventListener("click", () => this.addToCart(product));
   }
 
-  addProductToCart() {
-    let cartItems = getLocalStorage("so-cart") || [];
+  addToCart(product) {
+    const productList = getLocalStorage("so-cart") || [];
 
-    if (!Array.isArray(cartItems)) {
-      cartItems = [cartItems];
+    const isExist = productList.find((item) => item.Id === product.Id);
+
+    if (isExist) {
+      isExist.FinalPrice += product.FinalPrice;
+      isExist.Qtd += 1;
+    } else {
+      product.Qtd = 1;
+      productList.push(product);
     }
 
-    cartItems.push(this.product);
-    setLocalStorage("so-cart", cartItems);
+    setLocalStorage("so-cart", productList);
 
-    updateCartCount();
+    cartSuperscript();
   }
 
-  renderProductDetails() {
-    productDetailsTemplate(this.product);
-  }
-}
+  handleBrandCrumbs() {
+    const breadcrumbsElement = document.querySelector("#breadcrumbs");
 
-function productDetailsTemplate(product) {
-  document.querySelector("h2").textContent = product.Brand.Name;
-  document.querySelector("h3").textContent = product.NameWithoutBrand;
-
-  const productImage = document.getElementById("productImage");
-  productImage.src = product.Image;
-  productImage.alt = product.NameWithoutBrand;
-
-  document.getElementById("productPrice").textContent = product.FinalPrice;
-
-  document.getElementById("productColor").textContent =
-    product.Colors[0].ColorName;
-
-  document.getElementById("productDesc").innerHTML =
-    product.DescriptionHtmlSimple;
-
-  document.getElementById("addToCart").dataset.id = product.Id;
-
-  displayDiscountFlag(product);
-}
-
-function displayDiscountFlag(product) {
-  const priceElement = document.getElementById("productPrice");
-
-  if (
-    !product.SuggestedRetailPrice ||
-    !product.FinalPrice ||
-    product.FinalPrice >= product.SuggestedRetailPrice
-  ) {
-    return;
+    breadcrumbsElement.innerHTML = `
+      <span class="path">${this.product.Category}</span>
+    `;
   }
 
-  const discountPercentage = Math.round(
-    ((product.SuggestedRetailPrice - product.FinalPrice) /
-      product.SuggestedRetailPrice) *
-      100,
-  );
+  renderProductDetails(product) {
+    const detailsElement = document.querySelector(".product-detail");
 
-  const discountFlag = document.createElement("span");
+    /*
+     * Calculate the discount.
+     *
+     * SuggestedRetailPrice = original price
+     * ListPrice = current selling price
+     */
+    const originalPrice = Number(product.SuggestedRetailPrice);
+    const currentPrice = Number(product.ListPrice);
 
-  discountFlag.classList.add("discount-indicator");
-  discountFlag.textContent = `${discountPercentage}% OFF`;
+    const hasDiscount =
+      originalPrice > 0 &&
+      currentPrice > 0 &&
+      currentPrice < originalPrice;
 
-  priceElement.insertAdjacentElement("afterend", discountFlag);
+    const discountPercentage = hasDiscount
+      ? Math.round(
+          ((originalPrice - currentPrice) / originalPrice) * 100
+        )
+      : 0;
+
+    /*
+     * Price section
+     */
+    const priceMarkup = hasDiscount
+      ? `
+          <p class="product-card__price product-detail__price">
+            <span class="product-card__original-price">
+              $${originalPrice.toFixed(2)}
+            </span>
+
+            <span class="product-card__discount-price">
+              $${currentPrice.toFixed(2)}
+            </span>
+          </p>
+        `
+      : `
+          <p class="product-card__price product-detail__price">
+            $${currentPrice.toFixed(2)}
+          </p>
+        `;
+
+    /*
+     * Discount flag
+     */
+    const discountFlagMarkup = hasDiscount
+      ? `
+          <span class="discount-flag">
+            Save ${discountPercentage}%
+          </span>
+        `
+      : "";
+
+    detailsElement.innerHTML = `
+      <h3>${product.Brand.Name}</h3>
+
+      <h2 class="divider">
+        ${product.NameWithoutBrand}
+      </h2>
+
+      <img
+        class="divider"
+        src="${product.Images.PrimaryLarge}"
+        alt="${product.Name}"
+      />
+
+      ${priceMarkup}
+
+      ${discountFlagMarkup}
+
+      <p class="product__color">
+        ${product.Colors[0].ColorName}
+      </p>
+
+      <p class="product__description">
+        ${product.DescriptionHtmlSimple}
+      </p>
+
+      <div class="product-detail__add">
+        <button id="addToCart" data-id="${product.Id}">
+          Add to Cart
+        </button>
+      </div>
+    `;
+  }
 }

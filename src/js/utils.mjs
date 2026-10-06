@@ -1,3 +1,5 @@
+import initRegistrationCTA from "./register-cta.mjs";
+
 // wrapper for querySelector...returns matching element
 export function qs(selector, parent = document) {
   return parent.querySelector(selector);
@@ -57,6 +59,7 @@ export async function loadHeaderFooter() {
   const footerElement = document.querySelector("#main-footer");
   renderWithTemplate(headerTemplate, headerElement);
   renderWithTemplate(footerTemplate, footerElement);
+  initRegistrationCTA();
 };
 
 export function alertMessage(message, scroll = true) {

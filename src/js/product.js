@@ -1,6 +1,7 @@
 import { getParam, loadHeaderFooter } from "./utils.mjs";
 import ExternalServices from "./ExternalServices.mjs";
 import ProductDetails from "./ProductDetails.mjs";
+import ProductComments from "./ProductComments.mjs";
 import { updateCartCount } from "./cartCount.mjs";
 
 const dataSource = new ExternalServices();
@@ -12,6 +13,9 @@ async function init() {
   await loadHeaderFooter();
   await product.init();
   updateCartCount();
+
+    const comments = new ProductComments(productId);
+  comments.init();
 }
 
 init();
